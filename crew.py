@@ -62,19 +62,12 @@ def run_crew(repo_url: str, depth_level: str, groq_api_key: str, event_callback,
         verbose=True
     )
     
-    # Task mapping to agent index
-    task_map = {task1: 0, task2: 1, task3: 2, task4: 3}
-    
     @crewai_event_bus.scoped_handlers()
     def handle_tool_start(event: ToolUsageStartedEvent):
         tool_name = getattr(event, "tool_name", "unknown_tool")
-        # Attribute tool usage to active task if available
         event_callback("tool", (0, tool_name))
         
     event_callback("agent_start", 0)
-    
-    # Custom callback hooks during execution if desired, or rely on sequential flow
-    # We trigger state updates sequentially in app.py via the threaded runner
     
     result = crew.kickoff()
     
