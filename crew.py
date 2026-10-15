@@ -62,12 +62,13 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
     result = crew.kickoff()
     output_text = str(result)
     
-    output_dict = f"""
-## 📊 Project Analysis & Tech Stack Evaluation
-{output_text}
-
----
-
-## 📝 Professional README.md
-```markdown
-{output_text}
+    # Safe concatenation avoiding all triple-quote parsing conflicts
+    output_dict = (
+        "## 📊 Project Analysis & Tech Stack Evaluation\n" + output_text + "\n\n" +
+        "---\n\n" +
+        "## 📝 Professional README.md\n```markdown\n" + output_text + "\n```\n\n" +
+        "---\n\n" +
+        "## 🚀 LinkedIn Launch Announcement\n" + output_text
+    )
+    
+    return output_dict
