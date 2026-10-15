@@ -26,7 +26,7 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
     llm_standard = LLM(
         model=model_name,
         provider="openai",
-        base_url="https://api.groq.com/openai/v1",
+        base_url="[https://api.groq.com/openai/v1](https://api.groq.com/openai/v1)",
         api_key=groq_api_key,
         temperature=0.3,
         max_tokens=1500,
@@ -38,7 +38,7 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
     llm_writer = LLM(
         model=model_name,
         provider="openai",
-        base_url="https://api.groq.com/openai/v1",
+        base_url="[https://api.groq.com/openai/v1](https://api.groq.com/openai/v1)",
         api_key=groq_api_key,
         temperature=0.3,
         max_tokens=3000,
@@ -60,7 +60,6 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
     
     event_callback("agent_start", 0)
     result = crew.kickoff()
-    
     output_text = str(result)
     
     output_dict = f"""
@@ -72,5 +71,3 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
 ## 📝 Professional README.md
 ```markdown
 {output_text}
-"""
-return output_dict
