@@ -1,14 +1,10 @@
 from dataclasses import dataclass
-from queue import Queue
-from crewai import Crew, LLM, Task
-from crewai.events import crewai_event_bus
-from crewai.events.types.tool_usage_events import ToolUsageStartedEvent
-
 import agent_scanner
 import agent_analyst
 import agent_readme
 import agent_post
 from config import DEPTH_SETTINGS
+from crewai import Crew, LLM
 
 @dataclass
 class AgentMeta:
@@ -23,7 +19,7 @@ TEAM = [
     AgentMeta(agent_post.NAME, agent_post.ICON, agent_post.ROLE),
 ]
 
-def run_crew(repo_url: str, depth_level: str, groq_api_key: str, event_callback, model_override: str = None) -> str:
+def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override=None):
     depth_config = DEPTH_SETTINGS.get(depth_level, DEPTH_SETTINGS["Standard"])
     model_name = model_override or "openai/gpt-oss-120b"
     
@@ -62,21 +58,17 @@ def run_crew(repo_url: str, depth_level: str, groq_api_key: str, event_callback,
         verbose=True
     )
     
-    @crewai_event_bus.scoped_handlers()
-    def handle_tool_start(event: ToolUsageStartedEvent):
-        tool_name = getattr(event, "tool_name", "unknown_tool")
-        event_callback("tool", (0, tool_name))
-        
     event_callback("agent_start", 0)
-    
     result = crew.kickoff()
+    
+    output_text = str(result)
     
     output_dict = f"""
 ## 📊 Project Analysis & Tech Stack Evaluation
-{str(task2.output) if hasattr(task2, 'output') else str(result)}
+{output_text}
 
 ---
 
 ## 📝 Professional README.md
 ```markdown
-{str(task3.output) if hasattr(task3, 'output') else str(result)}
+{output_text}
