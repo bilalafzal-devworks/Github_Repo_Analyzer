@@ -23,13 +23,14 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
     depth_config = DEPTH_SETTINGS.get(depth_level, DEPTH_SETTINGS["Standard"])
     model_name = model_override or "openai/gpt-oss-120b"
     
+    # Optimized token limits to stay under Groq's 8,000 TPM free tier limit
     llm_standard = LLM(
         model=model_name,
         provider="openai",
         base_url="https://api.groq.com/openai/v1",
         api_key=groq_api_key,
         temperature=0.3,
-        max_tokens=1500,
+        max_tokens=1000,
         reasoning_effort="low",
         timeout=120,
         max_retries=6
@@ -41,7 +42,7 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
         base_url="https://api.groq.com/openai/v1",
         api_key=groq_api_key,
         temperature=0.3,
-        max_tokens=3000,
+        max_tokens=1500,
         reasoning_effort="low",
         timeout=120,
         max_retries=6
@@ -62,7 +63,6 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
     result = crew.kickoff()
     output_text = str(result)
     
-    # Safe concatenation avoiding all triple-quote parsing conflicts
     output_dict = (
         "## 📊 Project Analysis & Tech Stack Evaluation\n" + output_text + "\n\n" +
         "---\n\n" +
