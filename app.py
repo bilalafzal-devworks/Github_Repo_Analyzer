@@ -1,3 +1,7 @@
+---
+
+### `app.py`
+```python
 import os
 import queue
 import threading
@@ -169,7 +173,6 @@ if go:
     run_start = last_event = time.time()
     agent_start_time: dict[int, float] = {}
     
-    # Simulate smooth progression through the 4 agents if events are quick
     curr_sim_agent = 0
     events.put(("agent_start", 0))
 
@@ -196,7 +199,6 @@ if go:
         except queue.Empty:
             pass
 
-        # Time-based progression fallback for visual smoothness
         elapsed_total = time.time() - run_start
         if not finished and curr_sim_agent < 4:
             if elapsed_total > 4 and curr_sim_agent == 0:
@@ -250,7 +252,6 @@ if st.session_state.report:
     st.divider()
     tab1, tab2, tab3 = st.tabs(["📊 Project Analysis", "📝 README.md", "🚀 LinkedIn Post"])
     
-    # Split report sections roughly by headers or display tabs accordingly
     report_text = st.session_state.report
     
     with tab1:
