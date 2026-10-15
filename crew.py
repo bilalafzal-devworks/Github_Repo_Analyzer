@@ -71,3 +71,8 @@ def run_crew(repo_url, depth_level, groq_api_key, event_callback, model_override
 ## 📝 Professional README.md
 ```markdown
 {output_text}
+
+##🚀 LinkedIn Launch Announcement
+{output_text}
+"""
+return output_dict
