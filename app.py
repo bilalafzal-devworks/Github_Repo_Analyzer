@@ -1,7 +1,3 @@
----
-
-### `app.py`
-```python
 import os
 import queue
 import threading
