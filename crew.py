@@ -71,20 +71,12 @@ def run_crew(repo_url: str, depth_level: str, groq_api_key: str, event_callback,
     
     result = crew.kickoff()
     
-    event_callback("agent_done", 0)
-    event_callback("agent_start", 1)
-    event_callback("agent_done", 1)
-    event_callback("agent_start", 2)
-    event_callback("agent_done", 2)
-    event_callback("agent_start", 3)
-    event_callback("agent_done", 3)
-    
     output_dict = f"""
 ## 📊 Project Analysis & Tech Stack Evaluation
-{getattr(task2, 'output', 'Analysis generated.')}
+{str(task2.output) if hasattr(task2, 'output') else str(result)}
 
 ---
 
 ## 📝 Professional README.md
 ```markdown
-{getattr(task3, 'output', 'README generated.')}
+{str(task3.output) if hasattr(task3, 'output') else str(result)}
